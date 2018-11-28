@@ -17,6 +17,8 @@
     <StackLayout Padding="10, 0">
         <Entry  Margin="20,20,20,10" x:Name="movieTitle" Text="{Binding NewTitle}" Placeholder="New movietitle" />
         <Button Margin="20,0,20,0" Text="Add Movie" Command="{Binding AddCommand}"/>
+        <Entry  Margin="20,20,20,10" Text="{Binding SelectedMovie.Title}" Placeholder="Edit movietitle" />
+        <Button Margin="20,0,20,0" Text="Save Movie" Command="{Binding SaveCommand}"/>
         <Label x:Name="translateLabel" Text="{i18n:Translate Label1Text}"/>
         <Label x:Name="label"
                Text="{Binding SelectedMovie.Title}"
@@ -33,7 +35,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                    <Label Text="{Binding Title}"/>
+                        <Label Text="{Binding Title}"/>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

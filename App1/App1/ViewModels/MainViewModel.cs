@@ -34,6 +34,17 @@ namespace App1.ViewModels
                 {
                     return NewTitle?.Length > 0;
                 });
+            SaveCommand = new Command(
+                execute: () =>
+                {
+                    realm.Write(() =>
+                    {
+                        realm.Add(selectedMovie, true);
+                    });
+                },
+                canExecute: () => selectedMovie != null
+                );
+
         }
 
         Movie selectedMovie;
@@ -46,6 +57,7 @@ namespace App1.ViewModels
             set
             {
                 SetProperty(ref selectedMovie, value);
+                RefreshCanExecute();
             }
         }
 
@@ -64,11 +76,13 @@ namespace App1.ViewModels
         }
 
         public ICommand AddCommand { private set; get; }
+        public ICommand SaveCommand { private set; get; }
 
         //Tell all buttons to check there canexecute status again
         private void RefreshCanExecute()
         {
             (AddCommand as Command).ChangeCanExecute();
+            (SaveCommand as Command).ChangeCanExecute();
         }
     }
 }
