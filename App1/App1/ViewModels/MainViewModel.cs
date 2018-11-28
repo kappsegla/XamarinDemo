@@ -9,27 +9,46 @@ using Xamarin.Forms;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using Realms.Sync;
 
 namespace App1.ViewModels
 {
     class MainViewModel : BaseViewModel
     {
-        Realm realm = Realm.GetInstance();
+        Realm realm;
 
-        public IRealmCollection<Movie> Movies { get; }
+        public IRealmCollection<Movie> Movies { get; set; }
+
+        private async Task InitializeRealm()
+        {
+            /*var credentials = Credentials.UsernamePassword("test", "test", createUser: false);
+            var serverUrl = new Uri("https://handcrafted-plastic-bacon.de1a.cloud.realm.io");
+            var user = await User.LoginAsync(credentials, serverUrl);
+
+            var realmUrl = new Uri("realm://handcrafted-plastic-bacon.de1a.cloud.realm.io/~/userRealm");
+            var config = new FullSyncConfiguration(realmUrl,user);
+
+            realm = Realm.GetInstance(config);
+            */realm = Realm.GetInstance();
+            Movies = realm.All<Movie>().AsRealmCollection();
+        }
+
 
         public MainViewModel()
         {
-            Movies = realm.All<Movie>().AsRealmCollection();
+            InitializeRealm();
+           
+            
             AddCommand = new Command(
-                execute: () => {
+                execute: () =>
+                {
                     realm.WriteAsync((tempRealm) =>
                     {
                         var movie = new Movie();
                         movie.MovieID = System.Guid.NewGuid().ToString();
                         movie.Title = NewTitle;
                         tempRealm.Add(movie);
-                    });                    
+                    });
                 },
                 canExecute: () =>
                 {
