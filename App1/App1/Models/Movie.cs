@@ -5,7 +5,10 @@ namespace App1.Models
     public class Movie : RealmObject
     {
         [PrimaryKey]
-        public int MovieID { get; set; }
+        public string MovieID { get; set; }
         public string Title { get; set; }
+
+        [Ignored]
+        public bool Selected { get; set; }
     }
 }

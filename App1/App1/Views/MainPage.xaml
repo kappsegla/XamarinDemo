@@ -2,17 +2,25 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:App1.ViewModels;assembly=App1"
+             xmlns:conv="clr-namespace:App1.Converters;assembly=App1"
              x:Class="App1.MainPage"
              xmlns:i18n="clr-namespace:App1;assembly=App1">
     <ContentPage.BindingContext>
         <vm:MainViewModel/>
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:SelectedToColorConverter x:Key="cnvInvert"></conv:SelectedToColorConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <StackLayout Padding="10, 0">
+        <Entry  Margin="20,20,20,10" x:Name="movieTitle" Text="{Binding NewTitle}" Placeholder="New movietitle" />
+        <Button Margin="20,0,20,0" Text="Add Movie" Command="{Binding AddCommand}"/>
         <Label x:Name="translateLabel" Text="{i18n:Translate Label1Text}"/>
         <Label x:Name="label"
                Text="{Binding SelectedMovie.Title}"
-               FontSize="80"
+               FontSize="20"
                HorizontalOptions="Center"
                VerticalOptions="CenterAndExpand"/>
 
@@ -24,7 +32,9 @@
                    SelectedItem="{Binding SelectedMovie, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Title}" />
+                    <ViewCell>
+                    <Label Text="{Binding Title}" BackgroundColor="{Binding Selected, Converter={StaticResource cnvInvert}}"/>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
