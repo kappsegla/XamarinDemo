@@ -11,38 +11,47 @@ using System.Threading.Tasks;
 using System.Threading;
 using Realms.Sync;
 
+using Credentials = Realms.Sync.Credentials;
+
 namespace App1.ViewModels
 {
     class MainViewModel : BaseViewModel
     {
-        Realm realm;
+        private Realm _realm;
 
-        public IRealmCollection<Movie> Movies { get; set; }
+        public IEnumerable<Movie> Movies { get; set; }
 
-        private async Task InitializeRealm()
+        private async Task Initialize()
         {
-            /*var credentials = Credentials.UsernamePassword("test", "test", createUser: false);
-            var serverUrl = new Uri("https://handcrafted-plastic-bacon.de1a.cloud.realm.io");
-            var user = await User.LoginAsync(credentials, serverUrl);
-
-            var realmUrl = new Uri("realm://handcrafted-plastic-bacon.de1a.cloud.realm.io/~/userRealm");
-            var config = new FullSyncConfiguration(realmUrl,user);
-
-            realm = Realm.GetInstance(config);
-            */realm = Realm.GetInstance();
-            Movies = realm.All<Movie>().AsRealmCollection();
+            _realm = await OpenRealm();
+            Movies = _realm.All<Movie>().OrderBy(m => m.Title);
         }
 
+        private async Task<Realm> OpenRealm()
+        {
+            var user = User.Current;
+            if (user != null)
+            {
+                var config = new FullSyncConfiguration(new Uri(Constants.RealmPath, UriKind.Relative), user);
+                // User has already logged in, so we can just load the existing data in the Realm.
+                return Realm.GetInstance(config);
+            }
+            var credentials = Credentials.UsernamePassword("test", "test", createUser: false);
+            user = await User.LoginAsync(credentials, new Uri(Constants.AuthUrl));
+            var configuration = new FullSyncConfiguration(new Uri(Constants.RealmPath, UriKind.Relative), user);
+            // First time the user logs in, let's use GetInstanceAsync so we fully download the Realm
+            // before letting them interract with the UI.
+            var realm = await Realm.GetInstanceAsync(configuration);
+            return realm;
+            }
+        
 
         public MainViewModel()
         {
-            InitializeRealm();
-           
-            
             AddCommand = new Command(
                 execute: () =>
                 {
-                    realm.WriteAsync((tempRealm) =>
+                    _realm.WriteAsync((tempRealm) =>
                     {
                         var movie = new Movie();
                         movie.MovieID = System.Guid.NewGuid().ToString();
@@ -57,13 +66,14 @@ namespace App1.ViewModels
             SaveCommand = new Command(
                 execute: () =>
                 {
-                    realm.WriteAsync((tempRealm) =>
+                    _realm.WriteAsync((tempRealm) =>
                     {
                         tempRealm.Add(selectedMovie, true);
                     });
                 },
                 canExecute: () => selectedMovie != null
                 );
+            Initialize().IgnoreResult();
 
         }
 
@@ -103,6 +113,13 @@ namespace App1.ViewModels
         {
             (AddCommand as Command).ChangeCanExecute();
             (SaveCommand as Command).ChangeCanExecute();
+        }
+    }
+    public static class Extensions
+    {
+        public static void IgnoreResult(this Task task)
+        {
+            // This just silences the warnings when tasks are not awaited.
         }
     }
 }
