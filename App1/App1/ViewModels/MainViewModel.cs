@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace App1.ViewModels
 {
@@ -21,14 +23,13 @@ namespace App1.ViewModels
             Movies = realm.All<Movie>().AsRealmCollection();
             AddCommand = new Command(
                 execute: () => {
-                    realm.Write(() =>
+                    realm.WriteAsync((tempRealm) =>
                     {
-                        //var maxId = Movies.Max(m => m.MovieID);
                         var movie = new Movie();
                         movie.MovieID = System.Guid.NewGuid().ToString();
                         movie.Title = NewTitle;
-                        realm.Add(movie);
-                    });
+                        tempRealm.Add(movie);
+                    });                    
                 },
                 canExecute: () =>
                 {
@@ -37,9 +38,9 @@ namespace App1.ViewModels
             SaveCommand = new Command(
                 execute: () =>
                 {
-                    realm.Write(() =>
+                    realm.WriteAsync((tempRealm) =>
                     {
-                        realm.Add(selectedMovie, true);
+                        tempRealm.Add(selectedMovie, true);
                     });
                 },
                 canExecute: () => selectedMovie != null
