@@ -45,13 +45,7 @@ namespace App1.ViewModels
             }
             set
             {
-                if( selectedMovie != null)
-                    selectedMovie.Selected = false;
-
                 SetProperty(ref selectedMovie, value);
-
-                if (selectedMovie != null)
-                    selectedMovie.Selected = true;
             }
         }
 

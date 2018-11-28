@@ -11,10 +11,10 @@ namespace App1.Converters
         {
             if (value is bool)
             {
-                if ((Boolean)value)
-                    return Color.Azure;
+                if ((bool)value)
+                    return Color.Red;
             }
-            return Color.Default;
+            return Color.Green;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

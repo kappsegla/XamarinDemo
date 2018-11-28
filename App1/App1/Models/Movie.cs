@@ -7,8 +7,5 @@ namespace App1.Models
         [PrimaryKey]
         public string MovieID { get; set; }
         public string Title { get; set; }
-
-        [Ignored]
-        public bool Selected { get; set; }
     }
 }

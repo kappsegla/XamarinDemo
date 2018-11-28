@@ -33,7 +33,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                    <Label Text="{Binding Title}" BackgroundColor="{Binding Selected, Converter={StaticResource cnvInvert}}"/>
+                    <Label Text="{Binding Title}"/>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
