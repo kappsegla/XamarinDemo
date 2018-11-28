@@ -1,4 +1,6 @@
-﻿using System;
+﻿using App1.Models;
+using Realms;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -7,26 +9,26 @@ namespace App1.ViewModels
 {
     class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<Person> People { get; } = new ObservableCollection<Person>();
+        Realm realm = Realm.GetInstance();
+
+        public IRealmCollection<Movie> Movies { get; }
 
         public MainViewModel()
         {
-            People.Add(new Person { Name = "One" });
-            People.Add(new Person { Name = "Two" });
-            People.Add(new Person { Name = "Three" });
-            People.Add(new Person { Name = "Four" });
+            Movies = realm.All<Movie>().AsRealmCollection();
         }
-        Person selectedPerson;
-        public Person SelectedPerson
+
+        Movie selectedMovie;
+        public Movie SelectedMovie
         {
             get
             {
-                return selectedPerson;
+                return selectedMovie;
             }
 
             set
             {
-                SetProperty(ref selectedPerson, value);
+                SetProperty(ref selectedMovie, value);
             }
         }
     }

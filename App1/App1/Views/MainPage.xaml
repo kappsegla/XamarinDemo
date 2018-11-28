@@ -11,7 +11,7 @@
     <StackLayout Padding="10, 0">
         <Label x:Name="translateLabel" Text="{i18n:Translate Label1Text}"/>
         <Label x:Name="label"
-               Text="{Binding SelectedPerson.Name}"
+               Text="{Binding SelectedMovie.Title}"
                FontSize="80"
                HorizontalOptions="Center"
                VerticalOptions="CenterAndExpand"/>
@@ -20,11 +20,11 @@
                 VerticalOptions="CenterAndExpand"
                 Value="{Binding Source={x:Reference label}, Path=Opacity}"
                 />
-        <ListView x:Name="peopleList" ItemsSource="{Binding People}"
-                   SelectedItem="{Binding SelectedPerson, Mode=TwoWay}">
+        <ListView x:Name="peopleList" ItemsSource="{Binding Movies}"
+                   SelectedItem="{Binding SelectedMovie, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" />
+                    <TextCell Text="{Binding Title}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
