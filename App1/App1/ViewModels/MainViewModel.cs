@@ -19,7 +19,18 @@ namespace App1.ViewModels
     {
         private Realm _realm;
 
-        public IEnumerable<Movie> Movies { get; set; }
+        private IEnumerable<Movie> movies;
+        public IEnumerable<Movie> Movies
+        {
+            get
+            {
+                return movies;
+            }
+            set
+            {
+                SetProperty(ref movies, value);
+            }
+        }
 
         private async Task Initialize()
         {
@@ -45,7 +56,6 @@ namespace App1.ViewModels
             return realm;
             }
         
-
         public MainViewModel()
         {
             AddCommand = new Command(

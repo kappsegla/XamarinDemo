@@ -8,7 +8,7 @@
     <ContentPage.BindingContext>
         <vm:MainViewModel/>
     </ContentPage.BindingContext>
-   
+  
     <StackLayout Padding="10, 0">
         <Entry  Margin="20,20,20,10" x:Name="movieTitle" Text="{Binding NewTitle}" Placeholder="New movietitle" />
         <Button Margin="20,0,20,0" Text="Add Movie" Command="{Binding AddCommand}"/>
