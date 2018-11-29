@@ -2,34 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:App1.ViewModels;assembly=App1"
-             xmlns:conv="clr-namespace:App1.Converters;assembly=App1"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" ios:Page.UseSafeArea="true"
              x:Class="App1.MainPage"
              xmlns:i18n="clr-namespace:App1;assembly=App1">
     <ContentPage.BindingContext>
         <vm:MainViewModel/>
     </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <conv:SelectedToColorConverter x:Key="cnvInvert"></conv:SelectedToColorConverter>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
+   
     <StackLayout Padding="10, 0">
         <Entry  Margin="20,20,20,10" x:Name="movieTitle" Text="{Binding NewTitle}" Placeholder="New movietitle" />
         <Button Margin="20,0,20,0" Text="Add Movie" Command="{Binding AddCommand}"/>
         <Entry  Margin="20,20,20,10" Text="{Binding SelectedMovie.Title}" Placeholder="Edit movietitle" />
         <Button Margin="20,0,20,0" Text="Save Movie" Command="{Binding SaveCommand}"/>
-        <Label x:Name="translateLabel" Text="{i18n:Translate Label1Text}"/>
-        <Label x:Name="label"
-               Text="{Binding SelectedMovie.Title}"
-               FontSize="20"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand"/>
-
-        <Slider x:Name="slider"
-                VerticalOptions="CenterAndExpand"
-                Value="{Binding Source={x:Reference label}, Path=Opacity}"
-                />
+        <!-- <Label x:Name="translateLabel" Text="{i18n:Translate Label1Text}"/>-->
         <ListView x:Name="peopleList" ItemsSource="{Binding Movies}"
                    SelectedItem="{Binding SelectedMovie, Mode=TwoWay}">
             <ListView.ItemTemplate>
@@ -41,5 +26,4 @@
             </ListView.ItemTemplate>
         </ListView>
     </StackLayout>
-
 </ContentPage>

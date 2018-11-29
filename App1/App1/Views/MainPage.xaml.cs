@@ -16,7 +16,6 @@ namespace App1
             InitializeComponent();
             // force a specific culture, useful for quick testing
             //AppResources.Culture = new CultureInfo("sv-SE");
-            translateLabel.Text = AppResources.Label1Text;
         }
     }
 }
