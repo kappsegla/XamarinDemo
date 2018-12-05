@@ -5,13 +5,18 @@
              xmlns:local="clr-namespace:App1;assembly=App1"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" ios:Page.UseSafeArea="true"
              x:Class="App1.MainPage"
+             xmlns:behaviors="clr-namespace:App1.Behaviors"
              xmlns:i18n="clr-namespace:App1;assembly=App1">
     <ContentPage.BindingContext>
         <vm:AutoMainViewModel/>
     </ContentPage.BindingContext>
   
     <StackLayout Padding="10, 0">
-        <Entry  Margin="20,20,20,10" x:Name="movieTitle" Text="{Binding NewTitle}" Placeholder="New movietitle" />
+        <Entry  Margin="20,20,20,10" x:Name="movieTitle" Text="{Binding NewTitle}" Placeholder="New movietitle">
+            <Entry.Behaviors>
+                <behaviors:EmailValidatorBehavior x:Name="emailValidator"/>
+            </Entry.Behaviors>
+        </Entry>
         <Button Margin="20,0,20,0" Text="Add Movie" Command="{Binding AddCommand}"/>
         <Entry  Margin="20,20,20,10" Text="{Binding SelectedMovie.Title}" Placeholder="Edit movietitle" />
         <Button Margin="20,0,20,0" Text="Save Movie" Command="{Binding SaveCommand}"/>

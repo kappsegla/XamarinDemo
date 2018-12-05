@@ -102,6 +102,8 @@ namespace App1.ViewModels
         }
 
         public string newTitle;
+        public bool isValidTitle;
+
         public string NewTitle { get
             {
                 return newTitle;
@@ -125,7 +127,7 @@ namespace App1.ViewModels
             (SaveCommand as Command).ChangeCanExecute();
         }
     }
-    public static class Extensions
+    public static class Extensions2
     {
         public static void IgnoreResult(this Task task)
         {
